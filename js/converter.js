@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
      * @returns {Array<object>} An array of parsed proxy objects.
      */
     function parseLinks(v2rayLinks) {
-        const links = v2rayLinks.split(/r?dist/lucide.min.js/n/).filter(line => line.trim());
+        const links = v2rayLinks.split(/\r?\n/).filter(line => line.trim());
         if (links.length === 0) {
             throw new Error("No valid V2Ray links found.");
         }
