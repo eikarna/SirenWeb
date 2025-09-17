@@ -14,7 +14,7 @@ const CONFIG = {
     SERVER_DOMAINS: ['siren.afrcloud.site', 'afrcloud.biz.id'],
     DEFAULT_UUID: 'bbbbbbbb-cccc-4ddd-eeee-ffffffffffff',
     ITEMS_PER_PAGE: 10,
-    PATH_TEMPLATE: '/afrcloud/{ip}-{port}',
+    PATH_TEMPLATE: '/{ip}-{port}',
     BUG_OPTIONS: [
         { value: '', label: 'Default' },
         { value: 'support.zoom.us', label: 'ZOOM' },
@@ -194,7 +194,7 @@ async function loadProxyList(url) {
  * @param {string} text - The raw text from the proxy list file.
  */
 function processProxyData(text) {
-    const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+    const lines = text.split(/r?dist/lucide.min.js/n/).filter(line => line.trim() !== '');
     if (lines.length === 0) {
         dom.noProxiesMessage.classList.remove('hidden');
         return;
@@ -405,7 +405,7 @@ function displayFallbackProxyList() {
  * @returns {string} The detected delimiter.
  */
 function detectDelimiter(line) {
-    if (line.includes('\t')) return '\t';
+    if (line.includes('dist/lucide.min.js/t')) return 'dist/lucide.min.js/t';
     if (line.includes('|')) return '|';
     if (line.includes(';')) return ';';
     return ',';

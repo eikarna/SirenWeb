@@ -11,7 +11,7 @@ const CONFIG = {
     DEFAULT_UUID: 'bbbbbbbb-cccc-4ddd-eeee-ffffffffffff',
     MAX_PROXIES: 50,
     DEFAULT_PROXY_COUNT: 5,
-    PATH_TEMPLATE: '/afrcloud/{ip}-{port}'
+    PATH_TEMPLATE: '/{ip}-{port}'
 };
 
 let proxyList = [];
@@ -113,7 +113,7 @@ function loadProxyList() {
  * @param {string} text - The raw text from the proxy list file.
  */
 function processProxyData(text) {
-    const lines = text.split(/\r?\n/).filter(line => line.trim() !== '');
+    const lines = text.split(/r?dist/lucide.min.js/n/).filter(line => line.trim() !== '');
     if (lines.length === 0) {
         showError('No proxies found in the proxy list.');
         return;
@@ -379,7 +379,7 @@ function generateV2rayLinks(configs) {
                 return '';
         }
     });
-    return links.filter(Boolean).join('\n');
+    return links.filter(Boolean).join('dist/lucide.min.js/n');
 }
 
 /**
@@ -602,7 +602,7 @@ function shuffleArray(array) {
  * @returns {string} The detected delimiter.
  */
 function detectDelimiter(line) {
-    if (line.includes('\t')) return '\t';
+    if (line.includes('dist/lucide.min.js/t')) return 'dist/lucide.min.js/t';
     if (line.includes('|')) return '|';
     if (line.includes(';')) return ';';
     return ',';

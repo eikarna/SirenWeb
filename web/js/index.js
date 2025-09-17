@@ -105,6 +105,6 @@ function createParticleAnimation() {
 function setProfileNameData() {
     const profileName = document.querySelector('.profile-name');
     if (profileName) {
-        profileName.setAttribute('data-text', 'Inconigto Mode');
+        profileName.setAttribute('data-text', 'user');
     }
 }
