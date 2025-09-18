@@ -27,17 +27,14 @@
     <!-- js-yaml for robust YAML parsing -->
     <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
 </head>
-<body class="bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-gray-200 min-h-screen flex flex-col items-center p-4 font-['Rajdhani']">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-gray-300 min-h-screen flex flex-col items-center p-4 font-['Rajdhani']">
     <div class="w-full max-w-3xl mx-auto mb-4">
-        <div class="bg-slate-900/70 rounded-xl p-6 shadow-2xl relative overflow-hidden border border-purple-500/20">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 via-blue-500 to-red-500"></div>
+        <div class="bg-slate-900/70 rounded-xl p-6 shadow-2xl relative overflow-hidden border border-cyan-500/20">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-teal-500"></div>
 
             <div class="text-center mb-6">
-                <div class="relative inline-block">
-                    <h1 class="font-['Orbitron'] font-bold text-3xl tracking-wider bg-gradient-to-r from-purple-500 via-blue-500 to-red-500 bg-clip-text text-transparent">NixGen</h1>
-                    <span class="absolute -top-2 -right-12 text-xs font-bold bg-red-500 text-slate-900 px-2 py-1 rounded-md transform rotate-12">CONVERT</span>
-                </div>
-                <p class="text-sm text-purple-300 mt-1">V2Ray ↔ Clash Converter</p>
+                <h1 class="font-['Orbitron'] font-bold text-4xl tracking-wider bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">NixGen</h1>
+                <p class="text-sm text-cyan-300 mt-2 font-['Share_Tech_Mono'] tracking-widest">V2RAY ↔ CLASH CONVERTER</p>
             </div>
 
             <div class="space-y-6">
@@ -45,25 +42,25 @@
                 <div id="v2ray-to-config-section" class="space-y-6">
                     <div class="flex flex-col gap-2">
                         <label for="v2ray-input" class="text-sm font-semibold text-gray-300">V2Ray Links (vmess://, vless://, trojan://, ss://)</label>
-                        <textarea id="v2ray-input" class="w-full min-h-[150px] bg-slate-800/60 border border-purple-500/30 rounded-lg p-3 font-mono text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="Paste your V2Ray links here, one per line..."></textarea>
+                        <textarea id="v2ray-input" class="w-full min-h-[150px] bg-slate-800/60 border border-cyan-500/30 rounded-lg p-3 font-mono text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Paste your V2Ray links here, one per line..."></textarea>
                     </div>
 
                     <div class="flex flex-col gap-2">
                         <label class="text-sm font-semibold text-gray-300">Custom Server / Bug</label>
                         <div class="flex flex-wrap gap-2">
-                            <button id="custom-server-toggle" class="px-4 py-2 rounded-lg text-sm bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Enable Custom Server</button>
+                            <button id="custom-server-toggle" class="px-4 py-2 rounded-lg text-sm bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Enable Custom Server</button>
                         </div>
                     </div>
                     <div class="flex flex-col gap-2 mt-4" id="custom-server-input-container" style="display: none;">
                         <label for="custom-server-input" class="text-sm font-semibold text-gray-300">Custom Server/Bug Host</label>
-                        <input type="text" id="custom-server-input" class="w-full bg-slate-800/60 border border-purple-500/30 rounded-lg p-3 font-mono text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500" placeholder="Enter custom server or bug host (e.g., example.com)">
+                        <input type="text" id="custom-server-input" class="w-full bg-slate-800/60 border border-cyan-500/30 rounded-lg p-3 font-mono text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" placeholder="Enter custom server or bug host (e.g., example.com)">
 
                         <!-- New: Wildcard/Non-Wildcard Toggle -->
                         <div class="mt-4" id="wildcard-mode-selector">
                             <label class="text-sm font-semibold text-gray-300 mb-2">SNI/WS Host Mode:</label>
                             <div class="flex flex-wrap gap-2">
-                                <button id="non-wildcard-btn" class="px-4 py-2 rounded-lg text-sm bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Non-Wildcard</button>
-                                <button id="wildcard-btn" class="px-4 py-2 rounded-lg text-sm bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Wildcard</button>
+                                <button id="non-wildcard-btn" class="px-4 py-2 rounded-lg text-sm bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Non-Wildcard</button>
+                                <button id="wildcard-btn" class="px-4 py-2 rounded-lg text-sm bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Wildcard</button>
                             </div>
                         </div>
                     </div>
@@ -71,8 +68,8 @@
                     <div class="flex flex-col gap-2">
                         <label class="text-sm font-semibold text-gray-300">Configuration Type</label>
                         <div class="flex gap-3 mt-2">
-                            <button id="minimal-config" class="flex-1 px-4 py-2 rounded-lg text-sm bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Minimal (Proxies Only)</button>
-                            <button id="full-config" class="flex-1 px-4 py-2 rounded-lg text-sm bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Full Configuration</button>
+                            <button id="minimal-config" class="flex-1 px-4 py-2 rounded-lg text-sm bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Minimal (Proxies Only)</button>
+                            <button id="full-config" class="flex-1 px-4 py-2 rounded-lg text-sm bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Full Configuration</button>
                         </div>
                     </div>
 
@@ -83,31 +80,31 @@
                         <div class="mt-3 mb-3">
                             <label class="block text-sm font-semibold text-gray-400 mb-2">DNS Mode:</label>
                             <div class="flex flex-wrap gap-2">
-                                <button id="fake-ip" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Fake IP</button>
-                                <button id="redir-host" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Redir Host</button>
+                                <button id="fake-ip" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Fake IP</button>
+                                <button id="redir-host" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Redir Host</button>
                             </div>
                         </div>
 
                         <div class="mt-3 mb-3">
                             <label class="block text-sm font-semibold text-gray-400 mb-2">Proxy Groups:</label>
                             <div class="flex flex-wrap gap-2">
-                                <button id="best-ping" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Best Ping</button>
-                                <button id="load-balance" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Load Balance</button>
-                                <button id="fallback" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Fallback</button>
-                                <button id="all-groups" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">All Groups</button>
+                                <button id="best-ping" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Best Ping</button>
+                                <button id="load-balance" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Load Balance</button>
+                                <button id="fallback" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">Fallback</button>
+                                <button id="all-groups" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white">All Groups</button>
                             </div>
                         </div>
 
                         <div class="mt-3 mb-3">
                             <label class="block text-sm font-semibold text-gray-400 mb-2">Rule Sets:</label>
                             <div class="flex flex-wrap gap-2">
-                                <button id="ads-block" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Ads Block</button>
-                                <button id="porn-block" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Porn Block</button>
+                                <button id="ads-block" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Ads Block</button>
+                                <button id="porn-block" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white active">Porn Block</button>
                             </div>
                         </div>
                     </div>
 
-                    <button id="convert-v2ray" class="w-full p-3 rounded-lg text-center flex items-center justify-center gap-2 font-semibold text-lg bg-gradient-to-r from-purple-600 to-blue-500 text-white transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-purple-500/50 hover:-translate-y-0.5">
+                    <button id="convert-v2ray" class="w-full p-3 rounded-lg text-center flex items-center justify-center gap-2 font-semibold text-lg bg-gradient-to-r from-cyan-500 to-teal-500 text-white transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-cyan-500/50 hover:-translate-y-0.5">
                         <i data-lucide="refresh-cw" class="w-5 h-5"></i> Convert
                     </button>
 
@@ -115,7 +112,7 @@
                         <div class="flex justify-between items-center mb-2">
                             <label for="config-output" class="text-sm font-semibold text-gray-300">Result</label>
                             <div class="flex gap-2 items-center">
-                                <button id="copy-config" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-purple-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white flex items-center gap-1">
+                                <button id="copy-config" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-cyan-500/30 text-gray-300 transition-all hover:bg-slate-700/70 hover:text-white flex items-center gap-1">
                                     <i data-lucide="copy" class="w-3 h-3"></i> Copy
                                 </button>
                                 <button id="save-proxy-provider" class="px-3 py-1.5 rounded-md text-xs bg-slate-800/60 border border-blue-500/30 text-blue-300 transition-all hover:bg-slate-700/70 hover:text-white flex items-center gap-1">
@@ -126,30 +123,30 @@
                                 </button>
                             </div>
                         </div>
-                        <textarea id="config-output" class="w-full min-h-[150px] bg-slate-800/60 border border-purple-500/30 rounded-lg p-3 font-mono text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500" readonly placeholder="Converted configuration will appear here..."></textarea>
+                        <textarea id="config-output" class="w-full min-h-[150px] bg-slate-800/60 border border-cyan-500/30 rounded-lg p-3 font-mono text-sm text-gray-200 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500" readonly placeholder="Converted configuration will appear here..."></textarea>
                     </div>
                 </div>	
 				<br>
                 <br>
-                <a href="/" class="w-full p-3 rounded-lg text-center flex items-center justify-center gap-2 font-semibold text-lg bg-gradient-to-r from-purple-600 to-blue-500 text-white transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-purple-500/50 hover:-translate-y-0.5 mt-4">
+                <a href="/" class="w-full p-3 rounded-lg text-center flex items-center justify-center gap-2 font-semibold text-lg bg-gradient-to-r from-cyan-500 to-teal-500 text-white transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-cyan-500/50 hover:-translate-y-0.5 mt-4">
                     <i data-lucide="home" class="w-5 h-5"></i> Home
                 </a>
 
                 <div id="loading-indicator" class="absolute inset-0 bg-slate-900/90 flex flex-col items-center justify-center gap-4 rounded-xl z-10 hidden">
-                    <div class="w-10 h-10 border-4 border-purple-500/30 rounded-full border-t-purple-500 animate-spin"></div>
-                    <p class="text-purple-300 text-lg">Converting...</p>
+                    <div class="w-10 h-10 border-4 border-cyan-500/30 rounded-full border-t-cyan-500 animate-spin"></div>
+                    <p class="text-cyan-300 text-lg">Converting...</p>
                 </div>
 
                 <div id="error-message" class="bg-red-900/20 border border-red-500/30 text-red-400 p-3 rounded-lg text-sm text-center hidden"></div>
             </div>
         </div>
     </div>
-    <footer class="w-full max-w-3xl mx-auto mt-4 bg-slate-900/70 rounded-xl p-6 shadow-2xl relative overflow-hidden border border-purple-500/20 text-center flex flex-col items-center">
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 via-blue-500 to-red-500"></div>
+    <footer class="w-full max-w-3xl mx-auto mt-4 bg-slate-900/70 rounded-xl p-6 shadow-2xl relative overflow-hidden border border-cyan-500/20 text-center flex flex-col items-center">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-teal-500"></div>
         
-        <div class="font-['Orbitron'] font-bold text-lg bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent mb-2">NixGen</div>
+        <div class="font-['Orbitron'] font-bold text-lg bg-gradient-to-r from-cyan-500 to-teal-500 bg-clip-text text-transparent mb-2">NixGen</div>
         <div class="flex justify-center gap-3 mb-3">
-            <a href="https://t.me/nisakiren" class="text-purple-400 text-xs font-mono p-2 rounded-md bg-purple-900/20 border border-purple-800/30 transition-all hover:bg-purple-900/40 hover:-translate-y-0.5 flex items-center gap-2" target="_blank">
+            <a href="https://t.me/nisakiren" class="text-cyan-400 text-xs font-mono p-2 rounded-md bg-cyan-900/20 border border-cyan-800/30 transition-all hover:bg-cyan-900/40 hover:-translate-y-0.5 flex items-center gap-2" target="_blank">
                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.846 1.467 1.618 2.796 2.503 4.532.545 1.062 1.587 2.739 3.19 2.756 1.26.033 2.052-.6 3.542-1.95a142.91 142.91 0 0 1 2.43-2.053c1.686-.142 3.382-.284 5.12-.436.887-.075 1.92-.262 2.405-1.226.436-.877-.015-1.35-.48-1.874l-3.881-4.369-5.481-6.174S22.185 2.128 21.198 2.433z"></path>
                     <path d="M18.167 7.068c.237 1.632-1.162 6.872-1.766 8.849"></path>
@@ -157,24 +154,23 @@
                 @nisakiren
             </a>
         </div>
-        <div class="font-['Orbitron'] font-semibold text-xs text-red-400 mt-2 tracking-wider">© <span id="current-year"></span></div>
-        <div class="text-xs text-gray-500 mt-2">Dibuat oleh Eikarna, berdasarkan karya dari AFRcloud/Incognito Mode.</div>
+        
     </footer>
     
-    <div id="donation-button" class="fixed bottom-8 right-8 w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg cursor-pointer z-50 animate-pulse">
+    <div id="donation-button" class="fixed bottom-8 right-8 w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-lg cursor-pointer z-50 animate-pulse">
         <i data-lucide="heart-handshake" class="w-7 h-7"></i>
     </div>
     
     <!-- Donation Modal -->
     <div id="donation-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-300">
         <div id="donation-backdrop" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-        <div class="relative bg-slate-900 rounded-xl border border-purple-500/30 shadow-2xl w-full max-w-sm m-4 p-6 text-center">
+        <div class="relative bg-slate-900 rounded-xl border border-cyan-500/30 shadow-2xl w-full max-w-sm m-4 p-6 text-center">
             <button id="close-donation" class="absolute top-3 right-3 text-gray-400 hover:text-white">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
             
-            <h3 class="text-xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent mb-2">Support NixGen</h3>
-            <p class="text-sm text-purple-300 mb-4">Your donation helps keep our services running</p>
+            <h3 class="text-xl font-bold bg-gradient-to-r from-cyan-500 to-teal-500 bg-clip-text text-transparent mb-2">Support NixGen</h3>
+            <p class="text-sm text-cyan-300 mb-4">Your donation helps keep our services running</p>
             
             <div class="p-2 bg-white rounded-lg inline-block">
                 <img src="images/qris.png" alt="Donation QR Code" class="qris-image">

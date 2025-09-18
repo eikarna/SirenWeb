@@ -5,13 +5,22 @@
 // --- CONFIGURATION & STATE ---
 
 const CONFIG = {
-    PROXY_LIST_URL: 'https://raw.githubusercontent.com/AFRcloud/ProxyList/refs/heads/main/ProxyList.txt',
-    API_CHECK_URL: 'https://api.jb8fd7grgd.workers.dev/',
-    MAIN_DOMAINS: ['siren.afrcloud.site', 'afrcloud.biz.id'],
+    PROXY_LIST_URL: 'https://raw.githubusercontent.com/FoolVPN-ID/Nautica/refs/heads/main/proxyList.txt',
+    API_CHECK_URLS: [
+        'https://afrcloud.dpdns.org/', // Primary API
+        'https://api.jb8fd7grgd.workers.dev/' // Fallback API
+    ],
+    CORS_PROXIES: [
+        'https://api.allorigins.win/get?url=', // Primary CORS Proxy
+        'https://cors-anywhere.herokuapp.com/' // Fallback CORS Proxy
+    ],
+    MAIN_DOMAINS: [window.location.hostname],
     DEFAULT_UUID: 'bbbbbbbb-cccc-4ddd-eeee-ffffffffffff',
     MAX_PROXIES: 50,
     DEFAULT_PROXY_COUNT: 5,
-    PATH_TEMPLATE: '/{ip}-{port}'
+    PATH_TEMPLATE: '/{ip}-{port}',
+    BATCH_SIZE: 5, // Reduced batch size for more stability
+    VALIDATION_TIMEOUT: 5000 // 5 seconds
 };
 
 let proxyList = [];
@@ -42,9 +51,11 @@ const dom = {
     validCountElement: document.getElementById('valid-count'),
     invalidCountElement: document.getElementById('invalid-count'),
     errorMessageElement: document.getElementById('error-message'),
+    debugErrorMessageElement: document.getElementById('debug-error-message'),
     resultElement: document.getElementById('result'),
     outputElement: document.getElementById('output'),
-    copyLinkBtn: document.getElementById('copyLink')
+    copyLinkBtn: document.getElementById('copyLink'),
+    regionLoadingSpinner: document.getElementById('region-loading-spinner')
 };
 
 // --- INITIALIZATION ---
@@ -91,7 +102,10 @@ function setupEventListeners() {
  * Fetches the proxy list from the configured URL.
  */
 function loadProxyList() {
-    showLoading('Fetching proxy list...');
+    showRegionSpinner(true);
+    const submitButton = dom.form.querySelector('button[type="submit"]');
+    if (submitButton) submitButton.disabled = true;
+
     fetch(CONFIG.PROXY_LIST_URL)
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch proxy list');
@@ -99,12 +113,14 @@ function loadProxyList() {
         })
         .then(text => {
             processProxyData(text);
-            hideLoading();
         })
         .catch(error => {
             console.error('Error loading proxy list:', error);
             showError('Failed to load proxy list. Please try again later.');
-            hideLoading();
+        })
+        .finally(() => {
+            showRegionSpinner(false);
+            if (submitButton) submitButton.disabled = false;
         });
 }
 
@@ -157,35 +173,39 @@ function populateCountryDropdown() {
  * @param {Event} event - The form submission event.
  */
 async function handleFormSubmit(event) {
-    event.preventDefault();
-    clearError();
+    try {
+        event.preventDefault();
+        clearError();
 
-    const formValues = getFormValues();
-    if (!formValues) return; // Validation failed
+        const formValues = getFormValues();
+        if (!formValues) return; // Validation failed
 
-    const { shouldValidate, ...configOptions } = formValues;
+        const { shouldValidate, ...configOptions } = formValues;
 
-    filteredProxyList = getFilteredProxies(configOptions.country);
-    if (filteredProxyList.length === 0) {
-        showError('No proxies found with the selected criteria.');
-        return;
-    }
-
-    shuffleArray(filteredProxyList);
-    filteredProxyList = filteredProxyList.slice(0, configOptions.limit);
-
-    showLoading('Generating configuration...');
-
-    if (shouldValidate) {
-        await validateProxyList();
-        // Use only validated proxies if any were found
-        if (validatedProxies.length > 0) {
-            filteredProxyList = validatedProxies;
+        filteredProxyList = getFilteredProxies(configOptions.country);
+        if (filteredProxyList.length === 0) {
+            showError('No proxies found with the selected criteria.');
+            return;
         }
+
+        shuffleArray(filteredProxyList);
+        filteredProxyList = filteredProxyList.slice(0, configOptions.limit);
+
+        if (shouldValidate) {
+            showLoading('Validating proxies...');
+            await validateProxyList();
+            if (validatedProxies.length > 0) {
+                filteredProxyList = validatedProxies;
+            }
+            hideLoading();
+        }
+        
+        const generatedConfig = generateConfiguration(filteredProxyList, configOptions);
+        showResult(generatedConfig);
+    } catch (error) {
+        showDebugError(error);
+        hideLoading();
     }
-    
-    const generatedConfig = generateConfiguration(filteredProxyList, configOptions);
-    showResult(generatedConfig);
 }
 
 /**
@@ -230,58 +250,101 @@ function getFilteredProxies(country) {
 
 
 /**
- * Validates the filtered list of proxies.
+ * Validates the filtered list of proxies in batches.
  */
 async function validateProxyList() {
-    validationInProgress = true;
-    validatedProxies = [];
-    let totalValidated = 0;
-    let validCount = 0;
-    let invalidCount = 0;
+    try {
+        validationInProgress = true;
+        validatedProxies = [];
+        let totalValidated = 0;
+        let validCount = 0;
+        let invalidCount = 0;
 
-    resetValidationUI();
-    dom.validationStatusElement.style.display = 'block';
+        resetValidationUI();
+        dom.validationStatusElement.style.display = 'block';
 
-    const updateValidationProgress = () => {
-        totalValidated++;
-        const progress = (totalValidated / filteredProxyList.length) * 100;
-        dom.validationCountElement.textContent = `${totalValidated}/${filteredProxyList.length}`;
-        dom.validationBarElement.style.width = `${progress}%`;
-        dom.validCountElement.textContent = validCount;
-        dom.invalidCountElement.textContent = invalidCount;
-    };
+        const updateValidationProgress = () => {
+            const progress = (totalValidated / filteredProxyList.length) * 100;
+            dom.validationCountElement.textContent = `${totalValidated}/${filteredProxyList.length}`;
+            dom.validationBarElement.style.width = `${progress}%`;
+            dom.validCountElement.textContent = validCount;
+            dom.invalidCountElement.textContent = invalidCount;
+        };
 
-    const validationPromises = filteredProxyList.map(async (proxy) => {
-        const isValid = await validateProxy(proxy);
-        if (isValid) {
-            validCount++;
-            validatedProxies.push(proxy);
-        } else {
-            invalidCount++;
+        for (let i = 0; i < filteredProxyList.length; i += CONFIG.BATCH_SIZE) {
+            if (!validationInProgress) break;
+            const batch = filteredProxyList.slice(i, i + CONFIG.BATCH_SIZE);
+            await Promise.all(batch.map(async (proxy) => {
+                if (!validationInProgress) return;
+                const isValid = await validateProxy(proxy);
+                if (isValid) {
+                    validCount++;
+                    validatedProxies.push(proxy);
+                } else {
+                    invalidCount++;
+                }
+                totalValidated++;
+                updateValidationProgress();
+            }));
         }
-        updateValidationProgress();
-    });
 
-    await Promise.all(validationPromises);
-    validationInProgress = false;
+        validationInProgress = false;
+    } catch (error) {
+        showDebugError(error);
+        validationInProgress = false;
+    }
 }
 
 /**
- * Checks if a single proxy is active.
+ * Checks if a single proxy is active using multiple strategies.
  * @param {object} proxy - The proxy object to validate.
  * @returns {Promise<boolean>} True if the proxy is valid, false otherwise.
  */
 async function validateProxy(proxy) {
-    try {
-        const response = await fetch(`${CONFIG.API_CHECK_URL}${proxy.ip}:${proxy.port}`);
-        const data = await response.json();
-        const proxyData = Array.isArray(data) ? data[0] : data;
-        return proxyData && proxyData.proxyip === true;
-    } catch (error) {
-        console.error(`Error validating proxy ${proxy.ip}:${proxy.port}:`, error);
-        return false;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), CONFIG.VALIDATION_TIMEOUT);
+
+    // Strategy 1: Try primary API via CORS proxies
+    for (const corsProxy of CONFIG.CORS_PROXIES) {
+        try {
+            const targetUrl = encodeURIComponent(`${CONFIG.API_CHECK_URLS[0]}${proxy.ip}:${proxy.port}`);
+            const response = await fetch(`${corsProxy}${targetUrl}`, { signal: controller.signal });
+            if (!response.ok) continue; // Try next CORS proxy if this one fails
+
+            const contents = await response.text();
+            try {
+                const data = JSON.parse(contents);
+                const proxyData = Array.isArray(data.contents) ? JSON.parse(data.contents)[0] : JSON.parse(data.contents);
+                 return proxyData && proxyData.proxyip === true;
+            } catch (e) {
+                // JSON parsing failed, likely not a valid response, try next proxy
+                continue;
+            }
+        } catch (error) {
+            // This attempt failed, continue to the next CORS proxy
+            if (error.name !== 'AbortError') {
+                console.warn(`CORS proxy ${corsProxy} failed for ${proxy.ip}:${proxy.port}:`, error.message);
+            }
+        }
     }
+
+    // Strategy 2: Try fallback API directly
+    try {
+        const response = await fetch(`${CONFIG.API_CHECK_URLS[1]}${proxy.ip}:${proxy.port}`, { signal: controller.signal });
+        if (response.ok) {
+            const data = await response.json();
+            const proxyData = Array.isArray(data) ? data[0] : data;
+            return proxyData && proxyData.proxyip === true;
+        }
+    } catch (error) {
+        if (error.name !== 'AbortError') {
+            console.warn(`Fallback API failed for ${proxy.ip}:${proxy.port}:`, error.message);
+        }
+    }    
+    clearTimeout(timeoutId);
+    return false; // All strategies failed
 }
+
 
 // --- CONFIGURATION GENERATION ---
 
@@ -292,42 +355,47 @@ async function validateProxy(proxy) {
  * @returns {string} The generated configuration string.
  */
 function generateConfiguration(proxies, options) {
-    const configs = [];
-    const bugs = (options.customBug && ['non-wildcard', 'wildcard'].includes(options.bugType))
-        ? options.customBug.split(',').map(b => b.trim())
-        : [options.mainDomain];
+    try {
+        const configs = [];
+        const bugs = (options.customBug && ['non-wildcard', 'wildcard'].includes(options.bugType))
+            ? options.customBug.split(',').map(b => b.trim())
+            : [options.mainDomain];
 
-    proxies.forEach(proxy => {
-        bugs.forEach(bug => {
-            const { server, host, sni } = getServerHostSni(options.bugType, bug, options.mainDomain);
-            const baseName = `(${(proxy.country || 'UNK').toUpperCase()}) ${proxy.provider}`;
-            const path = CONFIG.PATH_TEMPLATE.replace('{ip}', proxy.ip).replace('{port}', proxy.port);
-            const port = options.isTls ? 443 : 80;
+        proxies.forEach(proxy => {
+            bugs.forEach(bug => {
+                const { server, host, sni } = getServerHostSni(options.bugType, bug, options.mainDomain);
+                const baseName = `(${(proxy.country || 'UNK').toUpperCase()}) ${proxy.provider}`;
+                const path = CONFIG.PATH_TEMPLATE.replace('{ip}', proxy.ip).replace('{port}', proxy.port);
+                const port = options.isTls ? 443 : 80;
 
-            const protocolsToGenerate = options.protocol === 'mix' 
-                ? ['vmess', 'vless', 'trojan', 'shadowsocks'] 
-                : [options.protocol];
+                const protocolsToGenerate = options.protocol === 'mix' 
+                    ? ['vmess', 'vless', 'trojan', 'shadowsocks'] 
+                    : [options.protocol];
 
-            protocolsToGenerate.forEach(proto => {
-                configs.push({
-                    protocol: proto,
-                    proxy,
-                    options: { ...options, server, host, sni, path, port, baseName }
+                protocolsToGenerate.forEach(proto => {
+                    configs.push({
+                        protocol: proto,
+                        proxy,
+                        options: { ...options, server, host, sni, path, port, baseName }
+                    });
                 });
             });
         });
-    });
 
-    switch (options.format) {
-        case 'v2ray':
-            return generateV2rayLinks(configs);
-        case 'clash':
-            return generateClashConfig(configs);
-        case 'nekobox':
-            return generateNekoboxConfig(configs);
-        default:
-            showError('Unsupported format type selected.');
-            return '';
+        switch (options.format) {
+            case 'v2ray':
+                return generateV2rayLinks(configs);
+            case 'clash':
+                return generateClashConfig(configs);
+            case 'nekobox':
+                return generateNekoboxConfig(configs);
+            default:
+                showError('Unsupported format type selected.');
+                return '';
+        }
+    } catch (error) {
+        showDebugError(error);
+        return ''; // Return empty string on error
     }
 }
 
@@ -388,61 +456,23 @@ function generateV2rayLinks(configs) {
  * @returns {string} The Clash config in YAML format.
  */
 function generateClashConfig(configs) {
-    const header = `# Clash Proxy Provider Configuration
-# Generated by NixGen
-# Date: ${new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' })}
-proxies:
-`;
+    const header = `# Clash Proxy Provider Configuration\n# Generated by NixGen\n# Date: ${new Date().toLocaleString('en-US', { timeZone: 'Asia/Jakarta' })}\nproxies:\n`;
     const proxyYaml = configs.map((config, index) => {
         const { protocol, options } = config;
         const { uuid, isTls, server, port, host, path, sni, baseName } = options;
         const tlsStr = isTls ? 'TLS' : 'NTLS';
         const name = `[${index + 1}] ${baseName} [${protocol.toUpperCase()}-${tlsStr}]`;
 
-        let proxyDetails = `
-  - name: "${name}"
-    server: ${server}
-    port: ${port}
-    tls: ${isTls}
-    skip-cert-verify: true
-    network: ws
-    ws-opts:
-      path: "${path}"
-      headers:
-        Host: ${host}
-`;
+        let proxyDetails = `\n  - name: "${name}"\n    server: ${server}\n    port: ${port}\n    tls: ${isTls}\n    skip-cert-verify: true\n    network: ws\n    ws-opts:\n      path: "${path}"\n      headers:\n        Host: ${host}\n`;
         switch (protocol) {
             case 'vmess':
-                return proxyDetails + `    type: vmess
-    uuid: ${uuid}
-    alterId: 0
-    cipher: zero
-    servername: ${sni}`; 
+                return proxyDetails + `    type: vmess\n    uuid: ${uuid}\n    alterId: 0\n    cipher: zero\n    servername: ${sni}`;
             case 'vless':
-                return proxyDetails + `    type: vless
-    uuid: ${uuid}
-    servername: ${sni}`; 
+                return proxyDetails + `    type: vless\n    uuid: ${uuid}\n    servername: ${sni}`;
             case 'trojan':
-                return proxyDetails + `    type: trojan
-    password: ${uuid}
-    sni: ${sni}`; 
+                return proxyDetails + `    type: trojan\n    password: ${uuid}\n    sni: ${sni}`;
             case 'shadowsocks':
-                return `
-  - name: "${name}"
-    type: ss
-    server: ${server}
-    port: ${port}
-    cipher: none
-    password: ${uuid}
-    plugin: v2ray-plugin
-    plugin-opts:
-      mode: websocket
-      tls: ${isTls}
-      skip-cert-verify: true
-      host: ${host}
-      path: "${path}"
-      mux: false
-`;
+                return `\n  - name: "${name}"\n    type: ss\n    server: ${server}\n    port: ${port}\n    cipher: none\n    password: ${uuid}\n    plugin: v2ray-plugin\n    plugin-opts:\n      mode: websocket\n      tls: ${isTls}\n      skip-cert-verify: true\n      host: ${host}\n      path: "${path}"\n      mux: false\n`;
             default:
                 return '';
         }
@@ -531,6 +561,9 @@ function generateNekoboxConfig(configs) {
 
 
 // --- UI HELPER FUNCTIONS ---
+function showRegionSpinner(show) {
+    dom.regionLoadingSpinner.style.display = show ? 'inline-block' : 'none';
+}
 
 function showLoading(message) {
     dom.loadingElement.style.display = 'block';
@@ -548,9 +581,16 @@ function showError(message) {
     dom.errorMessageElement.style.display = 'block';
 }
 
+function showDebugError(error) {
+    dom.debugErrorMessageElement.innerHTML = `<strong>Error:</strong> ${error.message}<br><pre>${error.stack}</pre>`;
+    dom.debugErrorMessageElement.style.display = 'block';
+}
+
 function clearError() {
     dom.errorMessageElement.textContent = '';
     dom.errorMessageElement.style.display = 'none';
+    dom.debugErrorMessageElement.textContent = '';
+    dom.debugErrorMessageElement.style.display = 'none';
 }
 
 function showResult(config) {
@@ -570,14 +610,13 @@ function resetValidationUI() {
 
 /**
  * Handles the click event for the copy link button.
- * @this {HTMLButtonElement}
  */
 function handleCopyLink() {
     copyToClipboard(dom.outputElement.value).then(success => {
         if (success) {
-            this.innerHTML = '<i class="fas fa-check-circle"></i> Copied!';
+            dom.copyLinkBtn.innerHTML = '<i class="fas fa-check-circle"></i> Copied!';
             setTimeout(() => {
-                this.innerHTML = '<i class="far fa-copy"></i> COPY CONFIGURATION';
+                dom.copyLinkBtn.innerHTML = '<i class="far fa-copy"></i> COPY CONFIGURATION';
             }, 2000);
         }
     });

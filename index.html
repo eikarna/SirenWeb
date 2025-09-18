@@ -17,66 +17,57 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-gray-200 min-h-screen flex flex-col items-center p-4 font-['Rajdhani']">
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-black text-gray-300 min-h-screen flex flex-col items-center p-4 font-['Rajdhani']">
     <div class="w-full max-w-md mx-auto mb-4">
-        <div class="bg-slate-900/70 rounded-xl p-6 shadow-2xl relative overflow-hidden border border-purple-500/20">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 via-blue-500 to-red-500"></div>
+        <div class="bg-slate-900/70 rounded-xl p-6 shadow-2xl relative overflow-hidden border border-cyan-500/20">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-teal-500"></div>
             
             <div class="text-center mb-6">
-                <div class="relative inline-block">
-                    <h1 class="font-['Orbitron'] font-bold text-3xl tracking-wider bg-gradient-to-r from-purple-500 via-blue-500 to-red-500 bg-clip-text text-transparent">NixGen</h1>
-                    <span class="absolute -top-2 -right-7 text-xs font-bold bg-red-500 text-slate-900 px-2 py-1 rounded-md transform rotate-12">HOME</span>
-                </div>
-                <p class="text-sm text-purple-300 mt-1">Advanced V2ray Generator</p>
+                <h1 class="font-['Orbitron'] font-bold text-4xl tracking-wider bg-gradient-to-r from-cyan-400 to-teal-400 bg-clip-text text-transparent">NixGen</h1>
+                <p class="text-sm text-cyan-300 mt-2 font-['Share_Tech_Mono'] tracking-widest">HOME</p>
             </div>
             
-            <div class="flex justify-center gap-4 my-6 flex-wrap">
-                <div class="flex flex-col items-center gap-2">
-                    <div class="w-12 h-12 rounded-full bg-slate-800/50 border border-slate-700 flex items-center justify-center text-purple-300">
-                        <i data-lucide="atom"></i>
-                    </div>
-                    <span class="text-xs text-purple-300">VMESS</span>
+            <div class="grid grid-cols-2 gap-4 my-8 relative">
+                <div class="absolute w-px h-full bg-cyan-500/20 left-1/2 top-0"></div>
+                <div class="absolute h-px w-full bg-cyan-500/20 top-1/2 left-0"></div>
+                <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-slate-800/50 border border-slate-700/50 aspect-square">
+                    <i data-lucide="atom" class="w-8 h-8 text-cyan-300 mb-2"></i>
+                    <span class="text-xs text-cyan-300">VMESS</span>
                 </div>
-                <div class="flex flex-col items-center gap-2">
-                    <div class="w-12 h-12 rounded-full bg-slate-800/50 border border-slate-700 flex items-center justify-center text-purple-300">
-                        <i data-lucide="zap"></i>
-                    </div>
-                    <span class="text-xs text-purple-300">VLESS</span>
+                <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-slate-800/50 border border-slate-700/50 aspect-square">
+                    <i data-lucide="zap" class="w-8 h-8 text-cyan-300 mb-2"></i>
+                    <span class="text-xs text-cyan-300">VLESS</span>
                 </div>
-                <div class="flex flex-col items-center gap-2">
-                    <div class="w-12 h-12 rounded-full bg-slate-800/50 border border-slate-700 flex items-center justify-center text-purple-300">
-                        <i data-lucide="shield"></i>
-                    </div>
-                    <span class="text-xs text-purple-300">TROJAN</span>
+                <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-slate-800/50 border border-slate-700/50 aspect-square">
+                    <i data-lucide="shield" class="w-8 h-8 text-cyan-300 mb-2"></i>
+                    <span class="text-xs text-cyan-300">TROJAN</span>
                 </div>
-                <div class="flex flex-col items-center gap-2">
-                    <div class="w-12 h-12 rounded-full bg-slate-800/50 border border-slate-700 flex items-center justify-center text-purple-300">
-                        <i data-lucide="ghost"></i>
-                    </div>
-                    <span class="text-xs text-purple-300">SHADOW</span>
+                <div class="flex flex-col items-center justify-center p-4 rounded-lg bg-slate-800/50 border border-slate-700/50 aspect-square">
+                    <i data-lucide="ghost" class="w-8 h-8 text-cyan-300 mb-2"></i>
+                    <span class="text-xs text-cyan-300">SHADOW</span>
                 </div>
             </div>
             
             <div class="flex flex-col gap-3 mt-6">
-                <a href="link" class="w-full p-3 rounded-lg text-center flex items-center justify-center gap-2 font-['Orbitron'] font-semibold tracking-wider bg-gradient-to-r from-purple-600 to-blue-500 text-white transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-purple-500/50 hover:-translate-y-0.5">
+                <a href="link" class="w-full p-3 rounded-lg text-center flex items-center justify-center gap-2 font-['Orbitron'] font-semibold tracking-wider bg-gradient-to-r from-cyan-500 to-teal-500 text-white transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-cyan-500/50 hover:-translate-y-0.5 hover:from-cyan-400 hover:to-teal-400">
                     <i data-lucide="link" class="w-4 h-4"></i> Link V2ray
                 </a>
-                <a href="sub" class="w-full p-3 rounded-lg text-center flex items-center justify-center gap-2 font-['Orbitron'] font-semibold tracking-wider bg-gradient-to-r from-purple-600 to-blue-500 text-white transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-purple-500/50 hover:-translate-y-0.5">
+                <a href="sub" class="w-full p-3 rounded-lg text-center flex items-center justify-center gap-2 font-['Orbitron'] font-semibold tracking-wider bg-gradient-to-r from-cyan-500 to-teal-500 text-white transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-cyan-500/50 hover:-translate-y-0.5 hover:from-cyan-400 hover:to-teal-400">
                     <i data-lucide="rss" class="w-4 h-4"></i> Subscription V2Ray
                 </a>
-                <a href="converter" class="w-full p-3 rounded-lg text-center flex items-center justify-center gap-2 font-['Orbitron'] font-semibold tracking-wider bg-gradient-to-r from-purple-600 to-blue-500 text-white transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-purple-500/50 hover:-translate-y-0.5">
+                <a href="converter" class="w-full p-3 rounded-lg text-center flex items-center justify-center gap-2 font-['Orbitron'] font-semibold tracking-wider bg-gradient-to-r from-cyan-500 to-teal-500 text-white transition-all duration-300 ease-in-out hover:shadow-lg hover:shadow-cyan-500/50 hover:-translate-y-0.5 hover:from-cyan-400 hover:to-teal-400">
                     <i data-lucide="git-compare-arrows" class="w-4 h-4"></i> Converter V2Ray to Clash
                 </a>
             </div>
         </div>
     </div>
     
-    <footer class="w-full max-w-md mx-auto mt-4 bg-slate-900/70 rounded-xl p-6 shadow-2xl relative overflow-hidden border border-purple-500/20 text-center flex flex-col items-center">
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-purple-600 via-blue-500 to-red-500"></div>
+    <footer class="w-full max-w-md mx-auto mt-4 bg-slate-900/70 rounded-xl p-6 shadow-2xl relative overflow-hidden border border-cyan-500/20 text-center flex flex-col items-center">
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 to-teal-500"></div>
         
-        <div class="font-['Orbitron'] font-bold text-lg bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent mb-2">NixGen</div>
+        <div class="font-['Orbitron'] font-bold text-lg bg-gradient-to-r from-cyan-500 to-teal-500 bg-clip-text text-transparent mb-2">NixGen</div>
         <div class="flex justify-center gap-3 mb-3">
-            <a href="https://t.me/nisakiren" class="text-purple-400 text-xs font-mono p-2 rounded-md bg-purple-900/20 border border-purple-800/30 transition-all hover:bg-purple-900/40 hover:-translate-y-0.5 flex items-center gap-2" target="_blank">
+            <a href="https://t.me/nisakiren" class="text-cyan-400 text-xs font-mono p-2 rounded-md bg-cyan-900/20 border border-cyan-800/30 transition-all hover:bg-cyan-900/40 hover:-translate-y-0.5 flex items-center gap-2" target="_blank">
                 <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M21.198 2.433a2.242 2.242 0 0 0-1.022.215l-8.609 3.33c-2.068.8-4.133 1.598-5.724 2.21a405.15 405.15 0 0 1-2.849 1.09c-.42.147-.99.332-1.473.901-.728.968.193 1.798.919 2.286 1.61.516 3.275 1.009 4.654 1.472.846 1.467 1.618 2.796 2.503 4.532.545 1.062 1.587 2.739 3.19 2.756 1.26.033 2.052-.6 3.542-1.95a142.91 142.91 0 0 1 2.43-2.053c1.686-.142 3.382-.284 5.12-.436.887-.075 1.92-.262 2.405-1.226.436-.877-.015-1.35-.48-1.874l-3.881-4.369-5.481-6.174S22.185 2.128 21.198 2.433z"></path>
                     <path d="M18.167 7.068c.237 1.632-1.162 6.872-1.766 8.849"></path>
@@ -84,27 +75,25 @@
                 @nisakiren
             </a>
         </div>
-        <div class="font-['Orbitron'] font-semibold text-xs text-red-400 mt-2 tracking-wider">© <span id="current-year"></span></div>
-        <div class="text-xs text-gray-500 mt-2">Dibuat oleh Eikarna, berdasarkan karya dari AFRcloud/Incognito Mode.</div>
     </footer>
     
-    <div id="donation-button" class="fixed bottom-8 right-8 w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-r from-purple-600 to-blue-500 text-white shadow-lg cursor-pointer z-50 animate-pulse">
+    <div id="donation-button" class="fixed bottom-8 right-8 w-14 h-14 rounded-full flex items-center justify-center bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-lg cursor-pointer z-50 animate-pulse">
         <i data-lucide="heart-handshake" class="w-7 h-7"></i>
     </div>
     
     <!-- Donation Modal -->
     <div id="donation-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center transition-opacity duration-300">
         <div id="donation-backdrop" class="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
-        <div class="relative bg-slate-900 rounded-xl border border-purple-500/30 shadow-2xl w-full max-w-sm m-4 p-6 text-center">
+        <div class="relative bg-slate-900 rounded-xl border border-cyan-500/30 shadow-2xl w-full max-w-sm m-4 p-6 text-center">
             <button id="close-donation" class="absolute top-3 right-3 text-gray-400 hover:text-white">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
             
-            <h3 class="text-xl font-bold bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent mb-2">Support NixGen</h3>
-            <p class="text-sm text-purple-300 mb-4">Your donation helps keep our services running</p>
+            <h3 class="text-xl font-bold bg-gradient-to-r from-cyan-500 to-teal-500 bg-clip-text text-transparent mb-2">Support NixGen</h3>
+            <p class="text-sm text-cyan-300 mb-4">Your donation helps keep our services running</p>
             
             <div class="p-2 bg-white rounded-lg inline-block">
-                <img src="images/qris.png" alt="Donation QR Code" class="w-48 h-48">
+                <img src="images/qris.png" alt="Donation QR Code" class="w-48">
             </div>
             
             <p class="text-xs text-gray-500 mt-3">Scan this QR code with your payment app to donate</p>
